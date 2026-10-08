@@ -75,6 +75,8 @@ void ASCharacter::PrimaryAttack()
 
 void ASCharacter::PrimaryInteract()
 {
+	// Don't really have to check here, because RAII will handle the case where InteractionComp is null, 
+	// but it's a good practice to check for null pointers before calling methods on them to avoid potential crashes or undefined behavior.
 	if (InteractionComp)
 	{
 		InteractionComp->PrimaryInteract();
@@ -100,6 +102,6 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("StopJumping", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
-	PlayerInputComponent->BindAction("PrimaryInteract", IE_Released, this, &ASCharacter::PrimaryInteract);
+	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
 }
 

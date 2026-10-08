@@ -2,6 +2,7 @@
 
 
 #include "SInteractionComponent.h"
+
 #include "SGamePlayInterface.h"
 #include "DrawDebugHelpers.h"
 
@@ -40,6 +41,7 @@ void USInteractionComponent::PrimaryInteract()
 	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
 	
 	AActor* MyOwner = GetOwner();
+
 	FVector EyeLocation;
 	FRotator EyeRotation;
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
@@ -47,6 +49,7 @@ void USInteractionComponent::PrimaryInteract()
 	FVector End = EyeLocation + (EyeRotation.Vector() * 1000.f);
 
 	FHitResult Hit;
+	// find the first thing that blocks the line trace - ray cast
 	GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
 
 	DrawDebugLine(GetWorld(), EyeLocation, End, FColor::Green, false, 2.0f, 0, 2.0f);
@@ -57,6 +60,7 @@ void USInteractionComponent::PrimaryInteract()
 		// ISGamePlayInterface holds the actual functions.
 		if(HitActor->Implements<USGamePlayInterface>())
 		{
+			// This cast in Unreal Engine is a safe way to convert a UObject pointer to a specific type.
 			APawn* MyPawn = Cast<APawn>(MyOwner);
 			ISGamePlayInterface::Execute_Interact(HitActor, MyPawn);
 		}
