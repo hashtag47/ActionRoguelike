@@ -14,6 +14,11 @@ ASItemChest::ASItemChest()
 	LidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LidMesh"));
 	LidMesh->SetupAttachment(BaseMesh);
 
+	//Because the chest is a static mesh, we want to set its collision object type to WorldDynamic. 
+	//This allows it to interact with other dynamic objects in the world,
+	//such as the player character or other physics-enabled objects.
+	BaseMesh->SetCollisionObjectType(ECC_WorldDynamic);
+
 	TargetPitch = 110.f;
 }
 
